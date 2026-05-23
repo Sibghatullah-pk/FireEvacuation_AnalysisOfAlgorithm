@@ -53,24 +53,74 @@ string getDifficultyLabel(int preset)
     return "Hard";
 }
 
+string getDifficultyDescription(int preset)
+{
+    if (preset == 1)
+    {
+        return "Small map, low crowd, slow fire";
+    }
+    if (preset == 2)
+    {
+        return "Balanced size, standard crowd, medium fire";
+    }
+    return "Large map, denser obstacles, fast fire";
+}
+
+string makeBar(int value, int maxValue, int width)
+{
+    if (maxValue <= 0)
+    {
+        maxValue = 1;
+    }
+
+    int filled = (value * width) / maxValue;
+    if (filled < 0)
+    {
+        filled = 0;
+    }
+    if (filled > width)
+    {
+        filled = width;
+    }
+
+    return string("[") + string(filled, '#') + string(width - filled, '-') + "]";
+}
+
+void drawPresetBlock(int y, int preset, int selectedPreset, const string &label, const string &description)
+{
+    ConsoleUI::PrintAt(7, y, string(preset == selectedPreset ? ">" : " ") + to_string(preset) + ". " + label, preset == selectedPreset ? ConsoleColor::YELLOW : ConsoleColor::WHITE);
+    ConsoleUI::PrintAt(10, y + 1, description, ConsoleColor::CYAN);
+}
+
 void showSettingsMenu(SimulationConfig &config, int &difficultyPreset)
 {
     while (true)
     {
         ConsoleUI::ClearScreen();
-        ConsoleUI::PrintCentered(2, "+=================================================+", ConsoleColor::CYAN);
-        ConsoleUI::PrintCentered(3, "|                 SETTINGS MENU                   |", ConsoleColor::YELLOW);
-        ConsoleUI::PrintCentered(4, "+=================================================+", ConsoleColor::CYAN);
+        ConsoleUI::DrawBox(1, 1, 78, 24, ConsoleColor::CYAN);
+        ConsoleUI::PrintCentered(2, "SETTINGS MENU", ConsoleColor::YELLOW);
+        ConsoleUI::PrintCentered(3, "Difficulty, building size, fire spread, and output preferences", ConsoleColor::WHITE);
 
-        ConsoleUI::PrintAt(8, 8, "1. Easy   - Small building, low obstacles, slow fire", ConsoleColor::WHITE);
-        ConsoleUI::PrintAt(8, 9, "2. Normal - Medium building, balanced challenge", ConsoleColor::WHITE);
-        ConsoleUI::PrintAt(8, 10, "3. Hard   - Large building, more obstacles, fast fire", ConsoleColor::WHITE);
-        ConsoleUI::PrintAt(8, 11, string("4. Save output default: ") + (config.saveOutput ? "ON" : "OFF"), ConsoleColor::WHITE);
-        ConsoleUI::PrintAt(8, 12, "5. Back to main menu", ConsoleColor::WHITE);
+        ConsoleUI::PrintAt(5, 5, "Difficulty Presets", ConsoleColor::GREEN);
+        drawPresetBlock(7, 1, difficultyPreset, "Easy", getDifficultyDescription(1));
+        drawPresetBlock(9, 2, difficultyPreset, "Normal", getDifficultyDescription(2));
+        drawPresetBlock(11, 3, difficultyPreset, "Hard", getDifficultyDescription(3));
 
-        ConsoleUI::PrintAt(8, 15, string("Current preset: ") + getDifficultyLabel(difficultyPreset), ConsoleColor::GREEN);
-        ConsoleUI::PrintAt(8, 16, string("Current size: ") + to_string(config.width) + "x" + to_string(config.height), ConsoleColor::CYAN);
-        ConsoleUI::PrintAt(8, 18, "Select option: ", ConsoleColor::YELLOW);
+        ConsoleUI::PrintAt(43, 5, "Current Configuration", ConsoleColor::GREEN);
+        ConsoleUI::PrintAt(43, 7, string("Preset: ") + getDifficultyLabel(difficultyPreset), ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 8, string("Size:   ") + to_string(config.width) + "x" + to_string(config.height), ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 9, string("Crowd:  ") + makeBar(config.peopleCount, 10, 12) + " " + to_string(config.peopleCount), ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 10, string("Fires:  ") + makeBar(config.fireCount, 3, 12) + " " + to_string(config.fireCount), ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 11, string("Obst.:  ") + makeBar((int)(config.obstacleDensity * 100), 20, 12) + " " + to_string((int)(config.obstacleDensity * 100)) + "%", ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 12, string("Fire:   ") + makeBar(config.fireSpreadChance, 100, 12) + " " + to_string(config.fireSpreadChance) + "%", ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 13, string("Save:   ") + (config.saveOutput ? "ON" : "OFF"), ConsoleColor::CYAN);
+        ConsoleUI::PrintAt(43, 15, string("Best for: ") + getDifficultyDescription(difficultyPreset), ConsoleColor::GREEN);
+
+        ConsoleUI::PrintAt(5, 12, "Actions", ConsoleColor::GREEN);
+        ConsoleUI::PrintAt(5, 14, "4. Toggle save output default", ConsoleColor::WHITE);
+        ConsoleUI::PrintAt(5, 15, "5. Return to main menu", ConsoleColor::WHITE);
+        ConsoleUI::PrintAt(5, 17, "Keys: 1-3 presets | 4 toggle save | 5/Q exit", ConsoleColor::YELLOW);
+        ConsoleUI::PrintAt(5, 19, "Selected preset applies immediately to the next run", ConsoleColor::WHITE);
 
         char choice = _getch();
         if (choice == '1' || choice == '2' || choice == '3')
