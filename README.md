@@ -38,6 +38,13 @@ During a simulation:
 - `H` - Show the heat map
 - `Space` - Advance one step in manual mode
 
+## Screenshots
+
+These screenshots are stored in the output folder for quick access:
+
+- [Main simulation screenshot](output/Output!.png)
+- [Additional simulation screenshot](output/Output!!.png)
+
 ## Output Folder
 
 Every completed run writes two files into `output/`:
@@ -51,19 +58,26 @@ When saving is enabled, the paths are also printed in the console after each run
 
 ## Project Structure
 
-- `main.cpp` - Application entry point and menu
-- `SimulationManager.cpp/.h` - Simulation loop, display logic, and output export
-- `Grid.cpp/.h` - Map generation, obstacle generation, and rendering
-- `Fire.cpp/.h` - Fire spread logic with configurable spread rate
-- `Person.cpp/.h` - Person behavior and adaptive evacuation logic
-- `PathfindingAlgorithms.cpp/.h` - BFS, Dijkstra, A*, hybrid, and multi-objective routing
-- `ConsoleUI.h` - Console rendering helpers
-- `Position.h` - Grid coordinate type
+- `src/main.cpp` - Application entry point and menu
+- `src/SimulationManager.cpp` and `include/SimulationManager.h` - Simulation loop, display logic, and output export
+- `src/Grid.cpp` and `include/Grid.h` - Map generation, obstacle generation, and rendering
+- `src/Fire.cpp` and `include/Fire.h` - Fire spread logic with configurable spread rate
+- `src/Person.cpp` and `include/Person.h` - Person behavior and adaptive evacuation logic
+- `src/PathfindingAlgorithms.cpp` and `include/PathfindingAlgorithms.h` - BFS, Dijkstra, A*, hybrid, and multi-objective routing
+- `include/ConsoleUI.h` - Console rendering helpers
+- `include/Position.h` - Grid coordinate type
 
 ## Notes
 
 - The project is designed for Windows because it uses console-specific APIs.
 - The simulator creates the `output/` folder automatically if saving is enabled and it does not already exist.
 - If you want to inspect a run after closing the program, open the files in `output/`.
-Create an exe by merging major files:
-g++ -std=c++17 main.cpp SimulationManager.cpp Grid.cpp Fire.cpp Person.cpp PathfindingAlgorithms.cpp -o fire_sim.exe
+
+## Build
+
+Use this command from the project root:
+
+```bash
+g++ -std=c++17 -Iinclude src/main.cpp src/SimulationManager.cpp src/Grid.cpp src/Fire.cpp src/Person.cpp src/PathfindingAlgorithms.cpp -o fire_sim.exe
+```
+
