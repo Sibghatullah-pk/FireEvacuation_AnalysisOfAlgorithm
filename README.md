@@ -40,10 +40,11 @@ During a simulation:
 
 ## Screenshots
 
-These screenshots are stored in the output folder for quick access:
+These screenshots are displayed below for quick viewing:
 
-- [Main simulation screenshot](output/Output!.png)
-- [Additional simulation screenshot](output/Output!!.png)
+![Main simulation screenshot](output/Output!.png)
+
+![Additional simulation screenshot](output/Output!!.png)
 
 ## Output Folder
 
