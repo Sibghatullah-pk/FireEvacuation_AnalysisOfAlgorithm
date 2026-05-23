@@ -2,12 +2,13 @@
 #include "ConsoleUI.h"
 #include <windows.h>
 #include <iostream>
+#include <algorithm>
 #include <cstdlib>
 #include <cmath>
 
 using namespace std;
 
-Grid::Grid(int w, int h) : width(w), height(h)
+Grid::Grid(int w, int h, double density) : width(w), height(h), obstacleDensity(max(0.0, min(density, 0.35)))
 {
     cells.resize(height, vector<char>(width, ' '));
     initializeGrid();
@@ -15,6 +16,16 @@ Grid::Grid(int w, int h) : width(w), height(h)
 
 void Grid::initializeGrid()
 {
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            cells[i][j] = ' ';
+        }
+    }
+
+    exits.clear();
+
     // Create walls around the perimeter
     for (int i = 0; i < height; i++)
     {
@@ -27,27 +38,48 @@ void Grid::initializeGrid()
         }
     }
 
-    // Add some internal walls
-    for (int i = 5; i < 15; i++)
+    vector<Position> plannedExits;
+    plannedExits.push_back(Position(1, 0));
+    plannedExits.push_back(Position(width - 2, 0));
+    plannedExits.push_back(Position(width - 1, height / 2));
+
+    auto isNearExit = [&plannedExits](const Position &pos)
     {
-        if (width / 2 < width)
-            cells[i][width / 2] = '#';
-    }
-    for (int j = 5; j < width / 2 && j < width; j++)
+        for (const Position &exit : plannedExits)
+        {
+            if (abs(exit.x - pos.x) + abs(exit.y - pos.y) <= 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    int innerCells = max(0, (width - 2) * (height - 2));
+    int obstacleCount = static_cast<int>(innerCells * obstacleDensity);
+    int placed = 0;
+    int attempts = 0;
+    int maxAttempts = max(100, obstacleCount * 10);
+
+    while (placed < obstacleCount && attempts < maxAttempts)
     {
-        if (7 < height)
-            cells[7][j] = '#';
+        Position obstacle(rand() % max(1, width - 2) + 1, rand() % max(1, height - 2) + 1);
+        attempts++;
+
+        if (cells[obstacle.y][obstacle.x] != ' ' || isNearExit(obstacle))
+        {
+            continue;
+        }
+
+        cells[obstacle.y][obstacle.x] = '#';
+        placed++;
     }
 
-    // Create exits
-    exits.push_back(Position(1, 0));
-    exits.push_back(Position(width - 2, 0));
-    exits.push_back(Position(width - 1, height / 2));
-
-    for (const auto &exit : exits)
+    for (const auto &exit : plannedExits)
     {
         if (isValid(exit))
         {
+            exits.push_back(exit);
             cells[exit.y][exit.x] = 'E';
         }
     }
