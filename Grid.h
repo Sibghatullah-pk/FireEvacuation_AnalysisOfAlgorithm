@@ -6,11 +6,12 @@ class Grid
 {
 private:
     int width, height;
+    double obstacleDensity;
     std::vector<std::vector<char>> cells;
     std::vector<Position> exits;
 
 public:
-    Grid(int w, int h);
+    Grid(int w, int h, double density = 0.12);
 
     void initializeGrid();
     bool isValid(const Position &pos) const;

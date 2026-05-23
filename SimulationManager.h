@@ -5,9 +5,21 @@
 #include <vector>
 #include <string>
 
+struct SimulationConfig
+{
+    int width = 50;
+    int height = 25;
+    int peopleCount = 8;
+    int fireCount = 2;
+    double obstacleDensity = 0.12;
+    int fireSpreadChance = 60;
+    bool saveOutput = true;
+};
+
 class SimulationManager
 {
 private:
+    SimulationConfig config;
     Grid grid;
     std::vector<Person> people;
     Fire fire;
@@ -26,7 +38,7 @@ private:
     void exportRunArtifacts() const;
 
 public:
-    SimulationManager(int width, int height);
+    SimulationManager(const SimulationConfig &simulationConfig);
 
     void initializeSimulation();
     void step();

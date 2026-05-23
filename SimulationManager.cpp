@@ -14,8 +14,8 @@
 using namespace std;
 namespace fs = std::filesystem;
 
-SimulationManager::SimulationManager(int width, int height)
-    : grid(width, height), stepCount(0), autoMode(true), rescued(0), burned(0), simulationSpeed(800), showStatistics(false), showHeatMap(false)
+SimulationManager::SimulationManager(const SimulationConfig &simulationConfig)
+    : config(simulationConfig), grid(config.width, config.height, config.obstacleDensity), stepCount(0), autoMode(true), rescued(0), burned(0), simulationSpeed(800), showStatistics(false), showHeatMap(false)
 {
     srand(time(nullptr));
     initializeSimulation();
@@ -68,6 +68,9 @@ string SimulationManager::buildRunSummary() const
     stream << "Success rate: " << fixed << setprecision(1) << successRate << "%\n";
     stream << "Current mode at finish: " << (autoMode ? "AUTO" : "MANUAL") << '\n';
     stream << "Simulation speed: " << simulationSpeed << " ms per step\n\n";
+    stream << "Map size: " << config.width << "x" << config.height << '\n';
+    stream << "Obstacle density: " << fixed << setprecision(2) << config.obstacleDensity << '\n';
+    stream << "Fire spread chance: " << config.fireSpreadChance << "%\n\n";
     stream << buildStatusBreakdown() << '\n';
     stream << "People status:\n";
 
@@ -111,6 +114,12 @@ string SimulationManager::buildGridSnapshot() const
 
 void SimulationManager::exportRunArtifacts() const
 {
+    if (!config.saveOutput)
+    {
+        cout << "\n  Output saving is disabled for this run." << endl;
+        return;
+    }
+
     fs::path outputDir("output");
     fs::create_directories(outputDir);
 
@@ -144,7 +153,7 @@ void SimulationManager::exportRunArtifacts() const
 
 void SimulationManager::initializeSimulation()
 {
-    int numPeople = 8;
+    int numPeople = config.peopleCount;
     for (int i = 0; i < numPeople; i++)
     {
         Position pos;
@@ -163,7 +172,7 @@ void SimulationManager::initializeSimulation()
         }
     }
 
-    int numFires = 2;
+    int numFires = config.fireCount;
     for (int i = 0; i < numFires; i++)
     {
         Position pos;
@@ -193,7 +202,7 @@ void SimulationManager::step()
 
     if (stepCount % 2 == 0)
     {
-        fire.spread(grid);
+        fire.spread(grid, config.fireSpreadChance);
     }
 
     updateStats();
@@ -453,7 +462,7 @@ void SimulationManager::run(bool initialAutoMode, int speed)
 
         if (autoMode)
         {
-            cout << "  [AUTO MODE] - Press any key for options\n";
+            cout << "  [AUTO MODE] - Q quit, M manual, S stats, H heatmap\n";
             Sleep(simulationSpeed);
 
             if (_kbhit())

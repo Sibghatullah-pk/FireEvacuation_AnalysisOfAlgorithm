@@ -47,9 +47,15 @@ public:
 
     static void ClearScreen()
     {
+        CONSOLE_SCREEN_BUFFER_INFO screenInfo;
+        GetConsoleScreenBufferInfo(g_ConsoleHandle, &screenInfo);
+
+        DWORD consoleSize = screenInfo.dwSize.X * screenInfo.dwSize.Y;
         COORD coord = {0, 0};
         DWORD count;
-        FillConsoleOutputCharacter(g_ConsoleHandle, ' ', 80 * 25, coord, &count);
+
+        FillConsoleOutputCharacter(g_ConsoleHandle, ' ', consoleSize, coord, &count);
+        FillConsoleOutputAttribute(g_ConsoleHandle, screenInfo.wAttributes, consoleSize, coord, &count);
         SetConsoleCursorPosition(g_ConsoleHandle, coord);
     }
 
