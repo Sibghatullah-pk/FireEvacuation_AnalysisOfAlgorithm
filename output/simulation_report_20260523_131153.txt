@@ -1,0 +1,27 @@
+Fire Evacuation Simulation Report
+=================================
+
+Steps: 26
+Total people: 8
+Rescued: 8
+Burned: 0
+Success rate: 100.0%
+Current mode at finish: AUTO
+Simulation speed: 200 ms per step
+
+Algorithm breakdown:
+  BFS: 0
+  Dijkstra: 0
+  A*: 0
+  Hybrid adaptive: 0
+  Multi-objective: 0
+
+People status:
+  Person 0: RESCUED
+  Person 1: RESCUED
+  Person 2: RESCUED
+  Person 3: RESCUED
+  Person 4: RESCUED
+  Person 5: RESCUED
+  Person 6: RESCUED
+  Person 7: RESCUED

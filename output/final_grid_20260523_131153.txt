@@ -1,0 +1,28 @@
+Final Grid Snapshot
+===================
+
+#E##############################################E#
+#                   FFFFFFFFFFFFFFFFFF           #
+#                    FFFFFFFFFFFFFFFFFF          #
+#                   FFFFFFFFFFFFFFFFFFFF         #
+#                   FFFFFFFFFFFFFFFFFFFF         #
+#                  FFFFFF#FFFFFFFFFFFFFF         #
+#                   FFFFF#FFFFFFFFFFFFF          #
+#    #####################FFFFFFFFFFFFFF         #
+#                        #FFFFFFFFFFFFF          #
+#                        #FFFFFFFFFFFF           #
+#                        #FFFFFFFFFFF            #
+#       FF               #FFFFFFFFF              #
+#      FFFFF             #FFFFFFFFF              E
+#    FFFFFFFF            #  FFF FF               #
+#   FFFFFFFFFF           #   F                   #
+#  FFFFFFFFFFFF                                  #
+# FFFFFFFFFFFFFF                                 #
+#FFFFFFFFFFFFFFFF                                #
+#FFFFFFFFFFFFFFFFF                               #
+#FFFFFFFFFFFFFFFFFF                              #
+#FFFFFFFFFFFFFFFFFF                              #
+#FFFFFFFFFFFFFFFFFFF                             #
+#FFFFFFFFFFFFFFFFF                               #
+#FFFFFFFFFFFFFFFFFFF                             #
+##################################################
