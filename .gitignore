@@ -1,1 +1,20 @@
-*.exe
+*.exe/
+# Ignore PyTorch checkpoint files
+*.pth
+
+# Node modules
+node_modules/
+
+# Frontend-specific node_modules
+frontend/node_modules/
+
+# Python virtual envs
+venv/
+env/
+.venv/
+
+# Byte-compiled / cache
+__pycache__/
+*.pyc
+node_modules/
+backend/uploads/
