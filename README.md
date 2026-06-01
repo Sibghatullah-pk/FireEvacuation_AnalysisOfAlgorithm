@@ -66,6 +66,9 @@ When saving is enabled, the paths are also printed in the console after each run
 - `src/Person.cpp` and `include/Person.h` - Person behavior and adaptive evacuation logic
 - `src/PathfindingAlgorithms.cpp` and `include/PathfindingAlgorithms.h` - BFS, Dijkstra, A*, hybrid, and multi-objective routing
 - `include/ConsoleUI.h` - Console rendering helpers
+cd S:\FireEvacuation_AnalysisOfAlhm\backend ; node server.js
+
+cd S:\FireEvacuation_AnalysisOfAlhm\frontend ; node node_modules/vite/bin/vite.js --host 127.0.0.1
 - `include/Position.h` - Grid coordinate type
 
 ## Notes
